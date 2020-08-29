@@ -1,0 +1,9 @@
+.video-js .vjs-time-tooltip{
+	word-break: keep-all;
+}
+.cv-line-link.active{
+	background-color:green;
+}
+ul.lines{
+	display:flex;
+}
