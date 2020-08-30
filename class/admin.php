@@ -9,6 +9,8 @@ class MLVOD_Admin_Class{
 </video>
 </div>
 <ul class="lines">%4$s</ul>';
+	private static $default_lines_json = '[]';
+	private static $default_line_format = '<li class="mlvod-line"><a href="#" class="mlvod-line-link" line="%1$s" vp="%2$s">%3$s</a></li>';
 	
 	/**
 	* Init
@@ -79,13 +81,18 @@ class MLVOD_Admin_Class{
 		) );
 		register_setting( 'options_mlvod', 'mlvod-lines-json', array(
 			'type' => 'string', 
-			'sanitize_callback' => 'esc_textarea',
-			'default' => '',
+			'sanitize_callback' => 'balanceTags',
+			'default' => self::$default_lines_json,
 		) );
 		register_setting( 'options_mlvod', 'mlvod-template', array(
 			'type' => 'string', 
 			'sanitize_callback' => 'balanceTags',
 			'default' => self::$default_template,
+		) );
+		register_setting( 'options_mlvod', 'mlvod-line_format', array(
+			'type' => 'string', 
+			'sanitize_callback' => 'balanceTags',
+			'default' => self::$default_line_format,
 		) );
         add_settings_section(
             'mlvod_setting_section',
@@ -123,6 +130,16 @@ class MLVOD_Admin_Class{
 				'label_for' => 'mlvod-template'
 			] 
 		);
+		add_settings_field(
+			'mlvod-line_format', 
+			__( 'Line Template', 'mlvod' ),
+			array('MLVOD_Admin_Class', 'callback_line_format'),
+			'options_mlvod',
+			'mlvod_setting_section', 
+			[
+				'label_for' => 'mlvod-line_format'
+			] 
+		);
 	}
 	
 	public static function callback_load_videojS() {
@@ -131,13 +148,18 @@ class MLVOD_Admin_Class{
 	}
 	
 	public static function callback_lines_json() {
-		$format = '<textarea name="mlvod-lines-json" rows="10" cols="50" id="mlvod-lines-json" class="large-text code">%1$s</textarea>';
+		$format = '<textarea name="mlvod-lines-json" rows="8" cols="50" id="mlvod-lines-json" class="large-text code">%1$s</textarea>';
 		echo  sprintf($format, get_option('mlvod-lines-json'));
 	}
 	
 	public static function callback_template() {
-		$format = '<textarea name="mlvod-template" rows="10" cols="50" id="mlvod-template" class="large-text code">%1$s</textarea>';
+		$format = '<textarea name="mlvod-template" rows="8" cols="50" id="mlvod-template" class="large-text code">%1$s</textarea>';
 		echo  sprintf($format, get_option('mlvod-template'));
+	}
+	
+	public static function callback_line_format() {
+		$format = '<textarea name="mlvod-line_format" rows="3" cols="50" id="mlvod-line_format" class="large-text code">%1$s</textarea>';
+		echo  sprintf($format, get_option('mlvod-line_format'));
 	}
 	
 	public static function mlvod_setting_section_cb() {
