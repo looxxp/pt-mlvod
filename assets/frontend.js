@@ -1,10 +1,10 @@
-jQuery('a.cv-line-link').click(function(e){
+jQuery('a.mlvod-line-link').click(function(e){
 	e.preventDefault();
 	var line = jQuery(this).attr('line');
 	var vp = jQuery(this).attr('vp');
 	var player = videojs('#' + vp);
 	var player_time = player.currentTime();
-	jQuery('a.cv-line-link').removeClass('active');
+	jQuery('a.mlvod-line-link').removeClass('active');
 	jQuery(this).addClass('active');
 
 	player.ready(function() {

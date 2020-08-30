@@ -1,9 +1,9 @@
 <?php
 
-class CFyes_Video_Main_Class{
+class MLVOD_Frontend_Class{
 	
 	private static $initiated = false;
-	private static $line_format = '<li class="cv-line"><a href="#" class="cv-line-link" line="%1$s" vp="%2$s">%3$s</a></li>';
+	private static $line_format = '<li class="mlvod-line"><a href="#" class="mlvod-line-link" line="%1$s" vp="%2$s">%3$s</a></li>';
 	
 	/**
 	* Init
@@ -19,33 +19,32 @@ class CFyes_Video_Main_Class{
 	*/
 	public static function init_hooks() {
 		self::$initiated = true;
-		add_shortcode( 'CFyes-Video', array('CFyes_Video_Main_Class', 'cfyes_video_sc') );
-		add_filter( 'cfyes_video_filter_lines', array('CFyes_Video_Main_Class', 'filter_lines'), 10, 1 );
+		add_shortcode( 'mlvod', array('MLVOD_Frontend_Class', 'video_sc') );
+		add_filter( 'mlvod_filter_lines', array('MLVOD_Frontend_Class', 'filter_lines'), 10, 1 );
 	}
 	
 	/**
 	* Plugin activated, add CRON job
 	*/
-	public static function cfyes_video_sc($atts, $content) {
+	public static function video_sc($atts, $content) {
 		wp_enqueue_script( 'video-js', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video.min.js', null, 'v7.8.4', true );
 		wp_enqueue_style( 'video-css', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video-js.min.css', array(), 'v7.8.4', 'all' );
 		wp_enqueue_style( 'video-sea-css', 'https://cdn.jsdelivr.net/npm/@videojs/themes@1.0.0/fantasy/index.css', array(), 'v1.0.0', 'all' );
-		wp_enqueue_script( 'cfyes-video-js', URL_CFYES_VIDEO_PLUGIN . '/assets/cfyes-video.js', null, VERSION_CFYES_VIDEO_PLUGIN, true );
-		wp_enqueue_style( 'cfyes-video-css', URL_CFYES_VIDEO_PLUGIN . '/assets/cfyes-video.css', null, VERSION_CFYES_VIDEO_PLUGIN, 'all' );
+		wp_enqueue_script( 'mlvod-js', URL_MLVOD_PLUGIN . '/assets/frontend.js', null, VERSION_MLVOD_PLUGIN, true );
+		wp_enqueue_style( 'mlvod-css', URL_MLVOD_PLUGIN . '/assets/style.css', null, VERSION_MLVOD_PLUGIN, 'all' );
 		
 		$atts = shortcode_atts( array(
 			'm3u8' => '',
 			'lines' => '',
-			'tp' => 0,
 			'poster'=>'',
 		), $atts);
 		
-		$lines = apply_filters('cfyes_video_filter_lines', $atts['lines']);
-		$player_id = 'cv-' . self::getSubstringFromEnd(wp_hash(rand(10000, 20000)), 6);
-		$lines = apply_filters('cfyes_video_lines', self::parse_lines($lines));
-		$template = apply_filters('cfyes_video_tp', self::get_template($atts['tp']));
-		$m3u8 = apply_filters('cfyes_video_m3u8', self::parse_m3u8($atts['m3u8'], $lines[0][1]));
-		$lines_html = apply_filters('cfyes_video_lines_html', self::build_lines_html($lines, self::$line_format, $m3u8, $player_id));
+		$lines = apply_filters('mlvod_filter_lines', $atts['lines']);
+		$player_id = 'mlvod-' . self::getSubstringFromEnd(wp_hash(rand(10000, 20000)), 6);
+		$lines = apply_filters('mlvod_lines', self::parse_lines($lines));
+		$template = apply_filters('mlvod_tp', get_option('mlvod-template'));
+		$m3u8 = apply_filters('mlvod_m3u8', self::parse_m3u8($atts['m3u8'], $lines[0][1]));
+		$lines_html = apply_filters('mlvod_lines_html', self::build_lines_html($lines, self::$line_format, $m3u8, $player_id));
 		$res = sprintf($template, $player_id, filter_var($atts['poster'], FILTER_VALIDATE_URL), $m3u8, $lines_html);
 		return $res;
 	}

@@ -1,8 +1,8 @@
 .video-js .vjs-time-tooltip{
 	word-break: keep-all;
 }
-.cv-line-link.active{
-	background-color:green;
+.mlvod-line-link.active{
+	background-color:bisque;
 }
 ul.lines{
 	display:flex;
