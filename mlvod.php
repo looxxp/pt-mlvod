@@ -4,7 +4,7 @@
  * Description: Play Videos On Demand with Multiple Lines
  * Plugin URI:        https://plugins.top/plugins/ml-vod/
  * Version: 0.5
- * Author:            edear
+ * Author:            Luoyang
  * Author URI:        https://plugins.top/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
