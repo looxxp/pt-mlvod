@@ -20,9 +20,5 @@ define( 'URL_MLVOD_PLUGIN',  plugins_url('', __FILE__));
 
 require_once(PATH_MLVOD_PLUGIN . 'class/frontend.php');
 require_once(PATH_MLVOD_PLUGIN . 'class/admin.php');
-if(!is_admin() && !wp_doing_ajax() ){
-	add_action( 'plugins_loaded', array( 'MLVOD_Frontend_Class', 'init' ) );
-}
-if(is_admin() && !wp_doing_ajax() ){
-	add_action( 'plugins_loaded', array( 'MLVOD_Admin_Class', 'init' ) );
-}
+add_action( 'plugins_loaded', array( 'MLVOD_Frontend_Class', 'init' ) );
+add_action( 'plugins_loaded', array( 'MLVOD_Admin_Class', 'init' ) );
