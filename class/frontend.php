@@ -20,21 +20,19 @@ class MLVOD_Frontend_Class{
 		self::$initiated = true;
 		add_shortcode( 'mlvod', array('MLVOD_Frontend_Class', 'video_sc') );
 		add_filter( 'mlvod_filter_lines', array('MLVOD_Frontend_Class', 'parse_lines'), 10, 1 );
+		add_action( 'mlvod_start', array('MLVOD_Frontend_Class', 'mlvod_start'), 10, 2);
 	}
 	
 	public static function video_sc($atts, $content) {
-		wp_enqueue_script( 'videojs-js', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video.min.js', null, 'v7.8.4', true );
-		wp_enqueue_style( 'videojs-css', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video-js.min.css', array(), 'v7.8.4', 'all' );
-		wp_enqueue_style( 'videojs-fantasy-css', 'https://cdn.jsdelivr.net/npm/@videojs/themes@1.0.0/fantasy/index.css', array(), 'v1.0.0', 'all' );
-		wp_enqueue_script( 'mlvod-js', URL_MLVOD_PLUGIN . '/assets/frontend.js', null, VERSION_MLVOD_PLUGIN, true );
-		wp_enqueue_style( 'mlvod-css', URL_MLVOD_PLUGIN . '/assets/style.css', null, VERSION_MLVOD_PLUGIN, 'all' );
-		
 		$atts = shortcode_atts( array(
 			'm3u8' => '',
 			'poster'=>'',
 		), $atts);
 		
 		$player_id = apply_filters('mlvod_player_id', 'mlvod-' . self::getSubstringFromEnd(wp_hash(rand(10000, 20000)), 6));
+		
+		do_action('mlvod_start', $atts, $player_id);
+		
 		$template = apply_filters('mlvod_tp', get_option('mlvod-template'));
 		$lines = apply_filters('mlvod_filter_lines', get_option('mlvod-lines-json'));
 		$line0 = '';
@@ -91,5 +89,16 @@ class MLVOD_Frontend_Class{
 	{
 		json_decode($string);
 		return (json_last_error() == JSON_ERROR_NONE);
+	}
+	
+	public static function mlvod_start()
+	{
+		if(get_option('mlvod-load-videojs') == 1){
+			wp_enqueue_script( 'videojs-js', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video.min.js', null, 'v7.8.4', true );
+			wp_enqueue_style( 'videojs-css', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video-js.min.css', array(), 'v7.8.4', 'all' );
+		}
+		wp_enqueue_style( 'videojs-fantasy-css', 'https://cdn.jsdelivr.net/npm/@videojs/themes@1.0.0/fantasy/index.css', array(), 'v1.0.0', 'all' );
+		wp_enqueue_script( 'mlvod-js', URL_MLVOD_PLUGIN . '/assets/frontend.js', null, VERSION_MLVOD_PLUGIN, true );
+		wp_enqueue_style( 'mlvod-css', URL_MLVOD_PLUGIN . '/assets/style.css', null, VERSION_MLVOD_PLUGIN, 'all' );
 	}
 }

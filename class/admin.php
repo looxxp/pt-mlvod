@@ -4,7 +4,7 @@ class MLVOD_Admin_Class{
 	
 	private static $initiated = false;
 	private static $default_template = '<div class="embed-responsive embed-responsive-16by9">
-<video id="%1$s" poster="" poster="%2$s" class="video-js vjs-16-9 vjs-theme-fantasy cfyes-video" controls="" data-setup="{}"  autoplay>
+<video id="%1$s" poster="%2$s" class="video-js vjs-16-9 vjs-theme-fantasy cfyes-video" controls="" data-setup="{}"  autoplay>
 <source src="%3$s" type="application/x-mpegURL">
 </video>
 </div>
