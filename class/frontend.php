@@ -22,9 +22,6 @@ class MLVOD_Frontend_Class{
 		add_filter( 'mlvod_filter_lines', array('MLVOD_Frontend_Class', 'parse_lines'), 10, 1 );
 	}
 	
-	/**
-	* Plugin activated, add CRON job
-	*/
 	public static function video_sc($atts, $content) {
 		wp_enqueue_script( 'videojs-js', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video.min.js', null, 'v7.8.4', true );
 		wp_enqueue_style( 'videojs-css', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video-js.min.css', array(), 'v7.8.4', 'all' );
