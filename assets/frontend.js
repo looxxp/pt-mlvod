@@ -4,11 +4,10 @@ jQuery('a.mlvod-line-link').click(function(e){
 	var vp = jQuery(this).attr('vp');
 	var player = videojs('#' + vp);
 	var player_time = player.currentTime();
-	jQuery('a.mlvod-line-link').removeClass('active');
+	jQuery('a.mlvod-line-link[vp=' + vp + ']').removeClass('active');
 	jQuery(this).addClass('active');
 
 	player.ready(function() {
-		var rd = Math.random();
 		this.src({
 			src: line,
 			type: 'application/x-mpegURL',
