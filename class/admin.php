@@ -70,9 +70,6 @@ class MLVOD_Admin_Class{
 	<?php
     }
 	
-    /**
-     * Settings page display callback.
-     */
     public static function admin_init() {
 		register_setting( 'options_mlvod', 'mlvod-load-videojs', array(
 			'type' => 'boolean', 
