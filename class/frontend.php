@@ -96,9 +96,9 @@ class MLVOD_Frontend_Class{
 		if(get_option('mlvod-load-videojs') == 1){
 			wp_enqueue_script( 'videojs-js', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video.min.js', null, 'v7.8.4', true );
 			wp_enqueue_style( 'videojs-css', 'https://cdn.jsdelivr.net/npm/video.js@7.8.4/dist/video-js.min.css', array(), 'v7.8.4', 'all' );
+			wp_enqueue_style( 'videojs-fantasy-css', 'https://cdn.jsdelivr.net/npm/@videojs/themes@1.0.0/fantasy/index.css', array(), 'v1.0.0', 'all' );
 		}
-		wp_enqueue_style( 'videojs-fantasy-css', 'https://cdn.jsdelivr.net/npm/@videojs/themes@1.0.0/fantasy/index.css', array(), 'v1.0.0', 'all' );
-		wp_enqueue_script( 'mlvod-js', URL_MLVOD_PLUGIN . '/assets/frontend.js', null, VERSION_MLVOD_PLUGIN, true );
+		wp_enqueue_script( 'mlvod-js', URL_MLVOD_PLUGIN . '/assets/frontend.js', array('jquery', 'videojs-js'), VERSION_MLVOD_PLUGIN, true );
 		wp_enqueue_style( 'mlvod-css', URL_MLVOD_PLUGIN . '/assets/style.css', null, VERSION_MLVOD_PLUGIN, 'all' );
 	}
 }
